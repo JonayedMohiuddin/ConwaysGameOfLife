@@ -24,45 +24,28 @@ eraseButton.addEventListener("click", () => {
 });
 
 playOrPauseButton.addEventListener("click", () => {
-    if (isPlaying) {
-        isPlaying = false;
-        playOrPauseButton.innerText = "Play";
-    } else {
-        isPlaying = true;
-        playOrPauseButton.innerText = "Pause";
-    }
+    isPlaying = !isPlaying;
+    playOrPauseButton.innerText = isPlaying ? "Pause" : "Play";
 });
 
 stepButton.addEventListener("click", () => {
-    console.log("Step");
     isStep = true;
 });
 
 clearButton.addEventListener("click", () => {
-    console.log("Clear");
     clearGrid();
 });
 
 gridVisibilityButton.addEventListener("click", () => {
     console.log("Grid Visibility");
     isGridVisible = !isGridVisible;
-    if (isGridVisible) {
-        gridVisibilityButton.innerText = "Hide Grid";
-    }
-    if (!isGridVisible) {
-        gridVisibilityButton.innerText = "Show Grid";
-    }
+    gridVisibilityButton.innerText = isGridVisible ? "Hide Grid" : "Show Grid";
 });
 
 debugModeButton.addEventListener("click", () => {
     console.log("Debug Mode");
     isDebugMode = !isDebugMode;
-    if (isDebugMode) {
-        debugModeButton.innerText = "Hide Debug Mode";
-    }
-    if (!isDebugMode) {
-        debugModeButton.innerText = "Show Debug Mode";
-    }
+    debugModeButton.innerText = isDebugMode ? "Hide Debug" : "Show Debug";
 });
 
 let isDrawing = true;

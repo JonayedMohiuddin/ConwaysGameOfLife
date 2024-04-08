@@ -109,6 +109,7 @@ function cellClicked(cellRow, cellColumn) {
 }
 
 function drawGrid() {
+    ctx.strokeStyle = "rgb(255, 255, 100, 50)";
     ctx.beginPath();
     ctx.lineWidth = 1;
     for (let row = 1; row < rows; row++) {

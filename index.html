@@ -81,6 +81,20 @@
             a:visited {
                 color: rgb(0, 0, 255);
             }
+
+            .buttonGroup {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            #drawButton {
+                background-color: rgb(20, 151, 26);
+            }
+
+            #eraseButton {
+                background-color: rgb(77, 84, 64);
+            }
         </style>
         <script src="main.js" defer></script>
     </head>
@@ -89,6 +103,10 @@
         <div class="container">
             <canvas id="canvas" width="1000" height="600"></canvas>
             <div class="controls">
+                <div class="buttonGroup">
+                    <button id="drawButton">Draw</button>
+                    <button id="eraseButton">Erase</button>
+                </div>
                 <button id="playOrPauseButton">Play</button>
                 <button id="stepButton">Step</button>
                 <button id="clearButton">Clear</button>
@@ -100,7 +118,7 @@
         <div class="divider"></div>
 
         <div class="heading">Few Patterns</div>
-        <img src="patterns.png" alt="some patterns">
+        <img src="patterns.png" alt="some patterns" />
 
         <div class="divider"></div>
 

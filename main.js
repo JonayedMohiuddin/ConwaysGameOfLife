@@ -6,6 +6,22 @@ const stepButton = document.getElementById("stepButton");
 const clearButton = document.getElementById("clearButton");
 const gridVisibilityButton = document.getElementById("gridVisibilityButton");
 const debugModeButton = document.getElementById("debugModeButton");
+const drawButton = document.getElementById("drawButton");
+const eraseButton = document.getElementById("eraseButton");
+
+drawButton.addEventListener("click", () => {
+    console.log("Draw");
+    isDrawing = true;
+    drawButton.style.backgroundColor = "rgb(77, 84, 64)";
+    eraseButton.style.backgroundColor = "rgb(173, 11, 11)";
+});
+
+eraseButton.addEventListener("click", () => {
+    console.log("Erase");
+    isDrawing = false;
+    drawButton.style.backgroundColor = "rgb(20, 151, 26)";
+    eraseButton.style.backgroundColor = "rgb(77, 84, 64)";
+});
 
 playOrPauseButton.addEventListener("click", () => {
     if (isPlaying) {
@@ -49,6 +65,7 @@ debugModeButton.addEventListener("click", () => {
     }
 });
 
+let isDrawing = true;
 let isPlaying = false;
 let isStep = false;
 let isDebugMode = false;
@@ -99,8 +116,13 @@ canvas.addEventListener("mousemove", (e) => {
 
 function cellClicked(cellRow, cellColumn) {
     if (cellRow < 0 || cellRow >= rows || cellColumn < 0 || cellColumn >= columns) return;
-    console.log(cellRow, cellColumn);
-    grid[cellRow][cellColumn] = 1;
+    if (isDebugMode) console.log(cellRow, cellColumn);
+
+    if (isDrawing) {
+        grid[cellRow][cellColumn] = 1;
+    } else {
+        grid[cellRow][cellColumn] = 0;
+    }
 }
 
 function drawGrid() {

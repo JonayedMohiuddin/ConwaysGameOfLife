@@ -6,7 +6,7 @@
         <title>Conway's Game of Life</title>
         <style>
             body {
-                background-color: gray;
+                background-color: rgb(180, 180, 180);
             }
 
             canvas {
@@ -20,6 +20,7 @@
                 font-size: 20px;
                 font-weight: bold;
                 margin-bottom: 12px;
+                text-align: center;
             }
 
             .container {
@@ -27,6 +28,7 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
+                margin-bottom: 60px;
             }
 
             .controls {
@@ -36,6 +38,28 @@
                 justify-content: center;
                 margin-left: 10px;
                 gap: 10px;
+            }
+
+            button {
+                padding: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                background-color: rgb(0, 0, 0);
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 10px;
+            }
+
+            button:hover {
+                background-color: rgb(29, 68, 27);
+            }
+
+            img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
             }
         </style>
         <script src="main.js" defer></script>
@@ -52,5 +76,7 @@
                 <button id="debugModeButton">Debug mode : Off</button>
             </div>
         </div>
+        <div class="heading">Few Patterns</div>
+        <img src="patterns.png" alt="some patterns">
     </body>
 </html>

@@ -25,7 +25,7 @@ const debugModeButton = document.getElementById("debugModeButton");
 
 playOrPauseButton.addEventListener("click", () => {
     isPlaying = !isPlaying;
-    playOrPauseButton.innerText = isPlaying ? "Pause" : "Play";
+    playOrPauseButton.innerText = isPlaying ? "Pause" : "Play  ▶";
 });
 
 stepButton.addEventListener("click", () => {
@@ -55,6 +55,7 @@ let isPlaying = false;
 let isDebugMode = false;
 let isGridVisible = false;
 let isStepCount = 0;
+let pressedKey = null;
 let canvasWidth = canvas.width;
 let canvasHeight = canvas.height;
 let cellSize = 20;
@@ -68,7 +69,12 @@ let isMouseDown = false;
 let isMouseLeftDown = 0;
 canvas.addEventListener("click", (e) => {
     isMouseLeftDown = e.button === 0;
-    cellClicked(e.offsetX, e.offsetY);
+
+    if (pressedKey === "f" || pressedKey === "F") {
+        floodFill(cordToCell(e.offsetX), cordToCell(e.offsetY));
+    } else {
+        cellClicked(cordToCell(e.offsetX), cordToCell(e.offsetY));
+    }
 });
 
 canvas.addEventListener("contextmenu", (e) => {
@@ -79,6 +85,12 @@ canvas.addEventListener("contextmenu", (e) => {
 canvas.addEventListener("mousedown", (e) => {
     isMouseDown = true;
     isMouseLeftDown = e.button === 0;
+
+    if (pressedKey === "f" || pressedKey === "F") {
+        floodFill(cordToCell(e.offsetX), cordToCell(e.offsetY));
+    } else {
+        cellClicked(cordToCell(e.offsetX), cordToCell(e.offsetY));
+    }
 });
 
 canvas.addEventListener("mouseup", (e) => {
@@ -95,14 +107,29 @@ document.addEventListener("mouseup", (e) => {
 
 canvas.addEventListener("mousemove", (e) => {
     if (isMouseDown) {
-        cellClicked(e.offsetX, e.offsetY);
+        if (pressedKey === "f" || pressedKey === "F") {
+            floodFill(cordToCell(e.offsetX), cordToCell(e.offsetY));
+        } else {
+            cellClicked(cordToCell(e.offsetX), cordToCell(e.offsetY));
+        }
     }
 });
 
-function cellClicked(x, y) {
-    const cellColumn = Math.floor(x / cellSize);
-    const cellRow = Math.floor(y / cellSize);
+addEventListener("keydown", (e) => {
+    console.log("keydown ", e.key);
+    pressedKey = e.key;
+});
 
+addEventListener("keyup", (e) => {
+    console.log("keyup ", e.key);
+    pressedKey = null;
+});
+
+function cordToCell(x) {
+    return Math.floor(x / cellSize);
+}
+
+function cellClicked(cellColumn, cellRow) {
     if (cellRow < 0 || cellRow >= rows || cellColumn < 0 || cellColumn >= columns) return;
     if (isDebugMode) console.log(cellRow, cellColumn, isMouseLeftDown);
 
@@ -111,6 +138,23 @@ function cellClicked(x, y) {
     } else {
         grid[cellRow][cellColumn] = 0;
     }
+}
+
+function floodFill(cellColumn, cellRow) {
+    if (cellRow < 0 || cellRow >= rows || cellColumn < 0 || cellColumn >= columns) return;
+
+    if (isMouseLeftDown) {
+        if (grid[cellRow][cellColumn] !== 0) return;
+        grid[cellRow][cellColumn] = 1;
+    } else {
+        if (grid[cellRow][cellColumn] !== 1) return;
+        grid[cellRow][cellColumn] = 0;
+    }
+
+    floodFill(cellColumn - 1, cellRow);
+    floodFill(cellColumn + 1, cellRow);
+    floodFill(cellColumn, cellRow - 1);
+    floodFill(cellColumn, cellRow + 1);
 }
 
 function drawGrid() {

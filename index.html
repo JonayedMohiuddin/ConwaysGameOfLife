@@ -89,29 +89,38 @@
             }
 
             #drawButton {
-                background-color: rgb(20, 151, 26);
+                background-color: rgb(77, 84, 64);
             }
 
             #eraseButton {
-                background-color: rgb(77, 84, 64);
+                background-color: rgb(173, 11, 11)
+            }
+
+            p {
+                font-size: 20px;
+                font-weight: bold;
+                text-align: center;
+                margin: 5px;
             }
         </style>
         <script src="main.js" defer></script>
     </head>
-    <body>
-        <div class="heading">Conway's Game of Life</div>
+    <body oncontextmenu="return false;">
+        <div class="heading">Conway's Game of Life (B3/S23 : Born if 3 neighbour, Survive if 2 or 3 neighbour)</div>
         <div class="container">
             <canvas id="canvas" width="1000" height="600"></canvas>
             <div class="controls">
-                <div class="buttonGroup">
+                <!-- <div class="buttonGroup">
                     <button id="drawButton">Draw</button>
                     <button id="eraseButton">Erase</button>
-                </div>
+                </div> -->
                 <button id="playOrPauseButton">Play</button>
                 <button id="stepButton">Step</button>
                 <button id="clearButton">Clear</button>
                 <button id="gridVisibilityButton">Show Grid</button>
                 <button id="debugModeButton">Debug mode : Off</button>
+                <p>Left click to draw</p>
+                <p>Right click to erase</p>
             </div>
         </div>
 
@@ -122,7 +131,7 @@
 
         <div class="divider"></div>
 
-        <div class="heading">Wikipedia Link</div>
-        <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Conway's Game of Life</a>
+        <div class="heading">Useful Links</div>
+        <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">[Wikipedia] Conway's Game of Life</a>
     </body>
 </html>

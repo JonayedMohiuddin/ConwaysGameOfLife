@@ -6,6 +6,7 @@ const stepButton = document.getElementById("stepButton");
 const clearButton = document.getElementById("clearButton");
 const gridVisibilityButton = document.getElementById("gridVisibilityButton");
 const debugModeButton = document.getElementById("debugModeButton");
+const cellSizeRangeSlider = document.getElementById("cellSizeRange");
 // const drawButton = document.getElementById("drawButton");
 // const eraseButton = document.getElementById("eraseButton");
 
@@ -22,6 +23,14 @@ const debugModeButton = document.getElementById("debugModeButton");
 //     drawButton.style.backgroundColor = "rgb(20, 151, 26)";
 //     eraseButton.style.backgroundColor = "rgb(77, 84, 64)";
 // });
+
+cellSizeRangeSlider.addEventListener("input", () => {
+    cellSize = cellSizeRangeSlider.value;
+    rows = Math.floor(canvasHeight / cellSize);
+    columns = Math.floor(canvasWidth / cellSize);
+    clearGrid();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
 
 playOrPauseButton.addEventListener("click", () => {
     isPlaying = !isPlaying;
@@ -42,6 +51,7 @@ gridVisibilityButton.addEventListener("click", () => {
     console.log("Grid Visibility");
     isGridVisible = !isGridVisible;
     gridVisibilityButton.innerText = isGridVisible ? "Hide Grid" : "Show Grid";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
 debugModeButton.addEventListener("click", () => {
@@ -71,7 +81,7 @@ canvas.addEventListener("click", (e) => {
     isMouseLeftDown = e.button === 0;
 
     if (pressedKey === "f" || pressedKey === "F") {
-        floodFill(cordToCell(e.offsetX), cordToCell(e.offsetY));
+        floodFill(cordToCell(e.offsetX), cordToCell(e.offsetY), isMouseLeftDown);
     } else {
         cellClicked(cordToCell(e.offsetX), cordToCell(e.offsetY));
     }
@@ -87,7 +97,7 @@ canvas.addEventListener("mousedown", (e) => {
     isMouseLeftDown = e.button === 0;
 
     if (pressedKey === "f" || pressedKey === "F") {
-        floodFill(cordToCell(e.offsetX), cordToCell(e.offsetY));
+        floodFill(cordToCell(e.offsetX), cordToCell(e.offsetY), isMouseLeftDown);
     } else {
         cellClicked(cordToCell(e.offsetX), cordToCell(e.offsetY));
     }
@@ -108,7 +118,7 @@ document.addEventListener("mouseup", (e) => {
 canvas.addEventListener("mousemove", (e) => {
     if (isMouseDown) {
         if (pressedKey === "f" || pressedKey === "F") {
-            floodFill(cordToCell(e.offsetX), cordToCell(e.offsetY));
+            floodFill(cordToCell(e.offsetX), cordToCell(e.offsetY), isMouseLeftDown);
         } else {
             cellClicked(cordToCell(e.offsetX), cordToCell(e.offsetY));
         }
@@ -140,10 +150,48 @@ function cellClicked(cellColumn, cellRow) {
     }
 }
 
-function floodFill(cellColumn, cellRow) {
+function isValidCell(cellColumn, cellRow, isFill) {
+    if (cellRow < 0 || cellRow >= rows || cellColumn < 0 || cellColumn >= columns) return false;
+    if(isFill && grid[cellRow][cellColumn] === 0) return true;
+    else if(!isFill && grid[cellRow][cellColumn] === 1) return true;
+    else return false;
+}
+
+let directions = [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+];
+function floodFill(cellColumn, cellRow, isFill = true) {
+    if(!isValidCell(cellColumn, cellRow, isFill)) return;
+
+    let stack = [{ cellColumn, cellRow }];
+
+    while (stack.length > 0) {
+        let current = stack.pop();
+        
+        if (isFill) {
+            grid[current.cellRow][current.cellColumn] = 1;
+        } else {
+            grid[current.cellRow][current.cellColumn] = 0;
+        }
+
+        for (let i = 0; i < directions.length; i++) {
+            let child = { cellColumn: current.cellColumn + directions[i][0], cellRow: current.cellRow + directions[i][1] };
+            if(isValidCell(child.cellColumn, child.cellRow, isFill))
+            {
+                stack.push(child);
+            }
+        }
+    }
+}
+
+// Causes stack overflow on small cell sizes or larger grids.
+function floodFill2(cellColumn, cellRow, isFill = true) {
     if (cellRow < 0 || cellRow >= rows || cellColumn < 0 || cellColumn >= columns) return;
 
-    if (isMouseLeftDown) {
+    if (isFill) {
         if (grid[cellRow][cellColumn] !== 0) return;
         grid[cellRow][cellColumn] = 1;
     } else {
@@ -151,10 +199,10 @@ function floodFill(cellColumn, cellRow) {
         grid[cellRow][cellColumn] = 0;
     }
 
-    floodFill(cellColumn - 1, cellRow);
-    floodFill(cellColumn + 1, cellRow);
-    floodFill(cellColumn, cellRow - 1);
-    floodFill(cellColumn, cellRow + 1);
+    floodFill(cellColumn - 1, cellRow, isFill);
+    floodFill(cellColumn + 1, cellRow, isFill);
+    floodFill(cellColumn, cellRow - 1, isFill);
+    floodFill(cellColumn, cellRow + 1, isFill);
 }
 
 function drawGrid() {

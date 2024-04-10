@@ -93,7 +93,7 @@
             }
 
             #eraseButton {
-                background-color: rgb(173, 11, 11)
+                background-color: rgb(173, 11, 11);
             }
 
             p {
@@ -101,6 +101,44 @@
                 font-weight: bold;
                 text-align: center;
                 margin: 5px;
+            }
+
+            .slidecontainer {
+                display: flex;
+                flex-direction: row;
+                font-size: 15px;
+            }
+
+            .slidername {
+                width: 80px;
+            }
+
+            /* The slider itself */
+            .slider {
+                -webkit-appearance: none; /* Override default CSS styles */
+                appearance: none;
+                width: 100%; /* Full-width */
+                height: 25px; /* Specified height */
+                background: #d3d3d3; /* Grey background */
+                outline: none; /* Remove outline */
+                opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+                -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+                transition: opacity 0.2s;
+            }
+
+            /* Mouse-over effects */
+            .slider:hover {
+                opacity: 1; /* Fully shown on mouse-over */
+            }
+
+            /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none; /* Override default look */
+                appearance: none;
+                width: 25px; /* Set a specific slider handle width */
+                height: 25px; /* Slider handle height */
+                background: #04aa6d; /* Green background */
+                cursor: pointer; /* Cursor on hover */
             }
         </style>
         <script src="main.js" defer></script>
@@ -114,11 +152,16 @@
                     <button id="drawButton">Draw</button>
                     <button id="eraseButton">Erase</button>
                 </div> -->
-                <button id="playOrPauseButton">Play  ▶</button>
+                <button id="playOrPauseButton">Play ▶</button>
                 <button id="stepButton">Step</button>
                 <button id="clearButton">Clear</button>
                 <button id="gridVisibilityButton">Show Grid</button>
                 <button id="debugModeButton">Show Debug Mode</button>
+                <div class="slidecontainer">
+                    <!-- <div class="slidername">Cell-Size : </div>
+                    <div id="cellSizeValue">20</div> -->
+                    <input type="range" min="2" max="50" value="20" class="slider" id="cellSizeRange" />
+                </div>
                 <p>Left click to draw</p>
                 <p>Right click to erase</p>
                 <p>F + Left click to flood fill</p>
